@@ -7,6 +7,9 @@ const http = require('http');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const { connectToMongoDB } = require('./config/db');
+
+require('dotenv').config();
 
 var app = express();
 
@@ -36,6 +39,7 @@ app.use(function(err, req, res, next) {
 });
 
 const server = http.createServer(app);
-server.listen(5000, () => {
-  console.log('Server is running on http://localhost:5000');
+server.listen(process.env.PORT, () => {
+connectToMongoDB();
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
