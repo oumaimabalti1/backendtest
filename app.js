@@ -40,6 +40,6 @@ app.use(function(err, req, res, next) {
 
 const server = http.createServer(app);
 server.listen(process.env.PORT, () => {
-connectToMongoDB();
+  connectToMongoDB();
   console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
