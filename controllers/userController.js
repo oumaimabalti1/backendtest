@@ -17,7 +17,7 @@ exports.createUser = async (req, res) => {
             message: 'Utilisateur créé avec succès',
             user: {
                 id: user._id,
-                nom: user.nom,
+                nom: user.name,
                 email: user.email,
                 role: user.role,
                 entrepriseId: user.entrepriseId,
@@ -30,7 +30,7 @@ exports.createUser = async (req, res) => {
     }
 };
 
-
+//get all users
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find()
@@ -47,11 +47,12 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
+//get user by id
 exports.getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
             .populate('entrepriseId')
-            .select('-motDePasse');
+            .select('-password');
         
         if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé' });
@@ -63,34 +64,43 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
+//update user
 exports.updateUser = async (req, res) => {
     try {
-        const { nom, email, role, entrepriseId, departement } = req.body;
-        
+        const { name, email, role, entrepriseId, departement } = req.body;
+
+        // Vérifier si email déjà utilisé par autre user
+        if (email) {
+            const existingUser = await User.findOne({ email });
+            if (existingUser && existingUser._id.toString() !== req.params.id) {
+                return res.status(400).json({ message: "Email déjà utilisé" });
+            }
+        }
+
         const user = await User.findByIdAndUpdate(
             req.params.id,
-            { nom, email, role, entrepriseId, departement },
-            { new: true, runValidators: true }
+            { name, email, role, entrepriseId, departement },
+            { returnDocument: 'after', runValidators: true }
         )
-            .populate('entrepriseId')
-            .select('-motDePasse');
-        
+        .populate('entrepriseId')
+        .select('-password');
+
         if (!user) {
             return res.status(404).json({ message: 'Utilisateur non trouvé' });
         }
-        
+
         res.json({
             message: 'Utilisateur mis à jour avec succès',
             user
         });
-        
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
 
+//delete user
 exports.deleteUser = async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
@@ -103,7 +113,7 @@ exports.deleteUser = async (req, res) => {
             message: 'Utilisateur supprimé avec succès',
             user: {
                 id: user._id,
-                nom: user.nom,
+                nom: user.name,
                 email: user.email
             }
         });
@@ -121,7 +131,7 @@ exports.getUsersByRole = async (req, res) => {
         
         const users = await User.find({ role })
             .populate('entrepriseId')
-            .select('-motDePasse');
+            .select('-password');  // ← إخفاء كلمة المرور
         
         res.json({
             role,
