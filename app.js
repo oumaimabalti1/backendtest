@@ -8,6 +8,12 @@ const http = require('http');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users.routes');
 const { connectToMongoDB } = require('./config/db');
+const entrepriseRoutes = require("./routes/entreprise.routes");
+const offresRouter = require('./routes/offre.routes');
+const candidaturesRouter = require('./routes/candidature.routes');
+const cvsRouter = require('./routes/cv.routes');
+const congesRouter = require('./routes/conge.routes')
+const plaintesRouter = require('./routes/plainte.routes');
 
 require('dotenv').config();
 
@@ -19,8 +25,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/entreprises", entrepriseRoutes);
+app.use("/offres",offresRouter);
+app.use("/candidatures", candidaturesRouter);
+app.use('/cvs', cvsRouter);
+app.use('/conges', congesRouter);
+app.use('/plaintes', plaintesRouter); 
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

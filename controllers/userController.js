@@ -35,7 +35,7 @@ exports.getAllUsers = async (req, res) => {
     try {
         const users = await User.find()
             .populate('entrepriseId')
-            .select('-password');  // ← إخفاء كلمة المرور
+            .select('-password');  
         
         res.json({
             count: users.length,
