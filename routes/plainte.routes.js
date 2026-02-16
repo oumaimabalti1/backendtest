@@ -8,8 +8,6 @@ router.get('/', plainteController.getAllPlaintes);                     // READ A
 router.get('/:id', plainteController.getPlainteById);                  // READ ONE
 router.put('/:id', plainteController.updatePlainte);                   // UPDATE
 router.delete('/:id', plainteController.deletePlainte);                // DELETE
-
-// Routes bonus
 router.get('/employe/:employeId', plainteController.getPlaintesByEmploye);     // BY EMPLOYEE
 router.get('/statut/:statut', plainteController.getPlaintesByStatut);          // BY STATUT
 

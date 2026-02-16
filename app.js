@@ -14,6 +14,8 @@ const candidaturesRouter = require('./routes/candidature.routes');
 const cvsRouter = require('./routes/cv.routes');
 const congesRouter = require('./routes/conge.routes')
 const plaintesRouter = require('./routes/plainte.routes');
+const adminRouter = require('./routes/admin.routes'); 
+const rhRouter = require('./routes/rh.routes'); 
 
 require('dotenv').config();
 
@@ -33,6 +35,8 @@ app.use("/candidatures", candidaturesRouter);
 app.use('/cvs', cvsRouter);
 app.use('/conges', congesRouter);
 app.use('/plaintes', plaintesRouter); 
+app.use('/admin', adminRouter);
+app.use('/rh', rhRouter); 
 
 
 
