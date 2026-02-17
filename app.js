@@ -6,7 +6,8 @@ var logger = require('morgan');
 const http = require('http');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users.routes');
+const authRouter = require('./routes/auth.routes');  
+const usersRouter = require('./routes/users.routes');
 const { connectToMongoDB } = require('./config/db');
 const entrepriseRoutes = require("./routes/entreprise.routes");
 const offresRouter = require('./routes/offre.routes');
@@ -16,6 +17,8 @@ const congesRouter = require('./routes/conge.routes')
 const plaintesRouter = require('./routes/plainte.routes');
 const adminRouter = require('./routes/admin.routes'); 
 const rhRouter = require('./routes/rh.routes'); 
+const employeeRouter=require('./routes/employee.routes');
+const candidatRouter=require('./routes/candidat.routes');
 
 require('dotenv').config();
 
@@ -37,8 +40,9 @@ app.use('/conges', congesRouter);
 app.use('/plaintes', plaintesRouter); 
 app.use('/admin', adminRouter);
 app.use('/rh', rhRouter); 
-
-
+app.use('/employee', employeeRouter); 
+app.use('/candidat', candidatRouter); 
+app.use('/auth', authRouter); 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

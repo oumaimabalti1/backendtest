@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const rhController = require('../controllers/rhController');
-
+const { protect, authorize } = require('../middlewares/authMiddleware');  // ← AJOUTER CETTE LIGNE
 
 // Toutes les routes nécessitent d'être RH
 router.use(protect, authorize('RH'));
