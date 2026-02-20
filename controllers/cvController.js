@@ -1,7 +1,7 @@
 const CV = require('../models/cv.model');
 const User = require('../models/user.model');
 
-// ✅ CREATE - Upload un CV
+// Upload un CV
 exports.uploadCV = async (req, res) => {
     try {
         const { texte, candidatId } = req.body;
@@ -52,7 +52,7 @@ exports.uploadCV = async (req, res) => {
 };
 
 
-// ✅ READ - Obtenir tous les CVs
+// Obtenir tous les CVs
 exports.getAllCVs = async (req, res) => {
     try {
         const cvs = await CV.find()
@@ -73,7 +73,7 @@ exports.getAllCVs = async (req, res) => {
     }
 };
 
-// ✅ READ - Obtenir un CV par ID
+// Obtenir un CV par ID
 exports.getCVById = async (req, res) => {
     try {
         const cv = await CV.findById(req.params.id)
@@ -99,7 +99,7 @@ exports.getCVById = async (req, res) => {
     }
 };
 
-// ✅ UPDATE - Mettre à jour un CV
+// Mettre à jour un CV
 exports.updateCV = async (req, res) => {
     try {
         const { texte } = req.body;
@@ -138,7 +138,7 @@ exports.updateCV = async (req, res) => {
     }
 };
 
-// ✅ DELETE - Supprimer un CV
+// Supprimer un CV
 exports.deleteCV = async (req, res) => {
     try {
         const cv = await CV.findByIdAndDelete(req.params.id);
@@ -167,7 +167,7 @@ exports.deleteCV = async (req, res) => {
     }
 };
 
-// ✅ BONUS - Obtenir le CV d'un candidat
+//  Obtenir le CV d'un candidat
 exports.getCVByCandidat = async (req, res) => {
     try {
         const cv = await CV.findOne({ candidatId: req.params.candidatId })

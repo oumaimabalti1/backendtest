@@ -141,7 +141,7 @@ exports.updateCandidatureStatut = async (req, res) => {
     }
 };
 
-// ✅ DELETE - Supprimer une candidature
+//  DELETE - Supprimer une candidature
 exports.deleteCandidature = async (req, res) => {
     try {
         const candidature = await Candidature.findByIdAndDelete(req.params.id);
@@ -169,7 +169,7 @@ exports.deleteCandidature = async (req, res) => {
     }
 };
 
-// ✅ BONUS - Obtenir les candidatures d'un candidat
+// Obtenir les candidatures d'un candidat
 exports.getCandidaturesByCandidat = async (req, res) => {
     try {
         const candidatures = await Candidature.find({ candidatId: req.params.candidatId })
@@ -190,7 +190,7 @@ exports.getCandidaturesByCandidat = async (req, res) => {
     }
 };
 
-// ✅ BONUS - Obtenir les candidatures pour une offre
+//  Obtenir les candidatures pour une offre
 exports.getCandidaturesByOffre = async (req, res) => {
     try {
         const candidatures = await Candidature.find({ offreId: req.params.offreId })
@@ -211,7 +211,7 @@ exports.getCandidaturesByOffre = async (req, res) => {
     }
 };
 
-// ✅ BONUS - Obtenir les candidatures par statut
+//  Obtenir les candidatures par statut
 exports.getCandidaturesByStatut = async (req, res) => {
     try {
         const { statut } = req.params;

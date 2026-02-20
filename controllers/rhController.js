@@ -77,7 +77,7 @@ exports.getMyEmployees = async (req, res) => {
 // GESTION DES OFFRES
 // ════════════════════════════════════════════════════
 
-// ✅ Publier une offre
+// Publier une offre
 exports.publishOffre = async (req, res) => {
     try {
         const { titre, description } = req.body;
@@ -102,7 +102,7 @@ exports.publishOffre = async (req, res) => {
     }
 };
 
-// ✅ Obtenir les offres de son entreprise
+// Obtenir les offres de son entreprise
 exports.getMyOffres = async (req, res) => {
     try {
         const offres = await Offre.find({ 
@@ -123,7 +123,7 @@ exports.getMyOffres = async (req, res) => {
     }
 };
 
-// ✅ Modifier une offre
+//  Modifier une offre
 exports.updateOffre = async (req, res) => {
     try {
         const { titre, description } = req.body;
@@ -159,7 +159,7 @@ exports.updateOffre = async (req, res) => {
     }
 };
 
-// ✅ Supprimer une offre
+// Supprimer une offre
 exports.deleteOffre = async (req, res) => {
     try {
         const offre = await Offre.findOneAndDelete({
@@ -191,7 +191,7 @@ exports.deleteOffre = async (req, res) => {
 // GESTION DES CANDIDATURES
 // ════════════════════════════════════════════════════
 
-// ✅ Obtenir les candidatures pour ses offres
+// Obtenir les candidatures pour ses offres
 exports.getMyCandidatures = async (req, res) => {
     try {
         // 1. Récupérer les IDs des offres de son entreprise
@@ -223,7 +223,7 @@ exports.getMyCandidatures = async (req, res) => {
     }
 };
 
-// ✅ Accepter une candidature
+//  Accepter une candidature
 exports.acceptCandidature = async (req, res) => {
     try {
         const candidature = await Candidature.findById(req.params.id)
@@ -263,7 +263,7 @@ exports.acceptCandidature = async (req, res) => {
     }
 };
 
-// ✅ Refuser une candidature
+// Refuser une candidature
 exports.refuseCandidature = async (req, res) => {
     try {
         const candidature = await Candidature.findById(req.params.id)
@@ -307,7 +307,7 @@ exports.refuseCandidature = async (req, res) => {
 // GESTION DES CONGÉS
 // ════════════════════════════════════════════════════
 
-// ✅ Obtenir les demandes de congé de ses employés
+//  Obtenir les demandes de congé de ses employés
 exports.getEmployeeConges = async (req, res) => {
     try {
         // Récupérer les IDs des employés de son entreprise
@@ -339,7 +339,7 @@ exports.getEmployeeConges = async (req, res) => {
     }
 };
 
-// ✅ Approuver un congé
+// Approuver un congé
 exports.approveConge = async (req, res) => {
     try {
         const conge = await Conge.findById(req.params.id)
@@ -377,7 +377,7 @@ exports.approveConge = async (req, res) => {
     }
 };
 
-// ✅ Refuser un congé
+// Refuser un congé
 exports.refuseConge = async (req, res) => {
     try {
         const conge = await Conge.findById(req.params.id)
@@ -419,7 +419,7 @@ exports.refuseConge = async (req, res) => {
 // GESTION DES PLAINTES
 // ════════════════════════════════════════════════════
 
-// ✅ Obtenir les plaintes de ses employés
+// Obtenir les plaintes de ses employés
 exports.getEmployeePlaintes = async (req, res) => {
     try {
         // Récupérer les IDs des employés de son entreprise
@@ -450,8 +450,7 @@ exports.getEmployeePlaintes = async (req, res) => {
         });
     }
 };
-
-// ✅ Répondre à une plainte
+//  Répondre à une plainte
 exports.replyPlainte = async (req, res) => {
     try {
         const { reponse } = req.body;

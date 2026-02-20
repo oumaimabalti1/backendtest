@@ -2,7 +2,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// ✅ REGISTER - Inscription (Candidat uniquement)
+//  Inscription (Candidat uniquement)
 exports.register = async (req, res) => {
     try {
         const { nom, email, password } = req.body;
@@ -48,7 +48,7 @@ exports.register = async (req, res) => {
     }
 };
 
-// ✅ LOGIN - Connexion (TOUS les users)
+// Connexion (TOUS les users)
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -97,7 +97,7 @@ exports.login = async (req, res) => {
     }
 };
 
-// ✅ GET PROFILE - Mon profil
+// Mon profil
 exports.getProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user.id)
@@ -124,7 +124,7 @@ exports.getProfile = async (req, res) => {
     }
 };
 
-// ✅ UPDATE PROFILE - Modifier profil
+// Modifier profil
 exports.updateProfile = async (req, res) => {
     try {
         const { nom, email } = req.body;
@@ -151,7 +151,7 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
-// ✅ CHANGE PASSWORD
+// CHANGE PASSWORD
 exports.changePassword = async (req, res) => {
     try {
         const { oldpassword, newpassword } = req.body;

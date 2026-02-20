@@ -1,7 +1,7 @@
 const Offre = require('../models/offre.model');
 const Entreprise = require('../models/entreprise.model');
 
-// ✅ CREATE - Créer une offre
+//  Créer une offre
 exports.createOffre = async (req, res) => {
     try {
         const { titre, description, entrepriseId } = req.body;
@@ -38,7 +38,7 @@ exports.createOffre = async (req, res) => {
     }
 };
 
-// ✅ READ - Obtenir toutes les offres
+//  Obtenir toutes les offres
 exports.getAllOffres = async (req, res) => {
     try {
         const offres = await Offre.find()
@@ -59,7 +59,7 @@ exports.getAllOffres = async (req, res) => {
     }
 };
 
-// ✅ READ - Obtenir une offre par ID
+//  Obtenir une offre par ID
 exports.getOffreById = async (req, res) => {
     try {
         const offre = await Offre.findById(req.params.id)
@@ -85,7 +85,7 @@ exports.getOffreById = async (req, res) => {
     }
 };
 
-// ✅ UPDATE - Mettre à jour une offre
+//  Mettre à jour une offre
 exports.updateOffre = async (req, res) => {
     try {
         const { titre, description } = req.body;
@@ -117,7 +117,7 @@ exports.updateOffre = async (req, res) => {
     }
 };
 
-// ✅ DELETE - Supprimer une offre
+// Supprimer une offre
 exports.deleteOffre = async (req, res) => {
     try {
         const offre = await Offre.findByIdAndDelete(req.params.id);
@@ -146,7 +146,7 @@ exports.deleteOffre = async (req, res) => {
     }
 };
 
-// ✅ BONUS - Obtenir les offres d'une entreprise
+//  Obtenir les offres d'une entreprise
 exports.getOffresByEntreprise = async (req, res) => {
     try {
         const offres = await Offre.find({ entrepriseId: req.params.entrepriseId })

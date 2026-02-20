@@ -26,7 +26,7 @@ exports.createEntrepriseWithRH = async (req, res) => {
             });
         }
         
-        // 2️⃣ Vérifier si l'email du RH existe déjà
+        // 2️ Vérifier si l'email du RH existe déjà
         const rhExiste = await User.findOne({ email: emailRH });
         if (rhExiste) {
             return res.status(400).json({ 
@@ -35,7 +35,7 @@ exports.createEntrepriseWithRH = async (req, res) => {
             });
         }
         
-        // 3️⃣ Créer l'entreprise
+        //  Créer l'entreprise
         const entreprise = await Entreprise.create({
             name: nomEntreprise,
             email: emailEntreprise,
@@ -81,7 +81,7 @@ exports.createEntrepriseWithRH = async (req, res) => {
     }
 };
 
-// ✅ Obtenir toutes les entreprises (vue Admin)
+// Obtenir toutes les entreprises (vue Admin)
 exports.getAllEntreprises = async (req, res) => {
     try {
         const entreprises = await Entreprise.find();
@@ -100,7 +100,7 @@ exports.getAllEntreprises = async (req, res) => {
     }
 };
 
-// ✅ Supprimer entreprise (et tous ses utilisateurs)
+// Supprimer entreprise (et tous ses utilisateurs)
 exports.deleteEntreprise = async (req, res) => {
     try {
         const { id } = req.params;
@@ -135,7 +135,7 @@ exports.deleteEntreprise = async (req, res) => {
     }
 };
 
-// ✅ Statistiques pour dashboard Admin
+// Statistiques pour dashboard Admin
 exports.getStatistiques = async (req, res) => {
     try {
         const totalEntreprises = await Entreprise.countDocuments();

@@ -213,11 +213,8 @@ exports.annulerCandidature = async (req, res) => {
     }
 };
 
-// ════════════════════════════════════════════════════
-// GESTION DU CV
-// ════════════════════════════════════════════════════
 
-// ✅ Upload/Mettre à jour mon CV
+// Upload/Mettre à jour mon CV
 exports.uploadCV = async (req, res) => {
     try {
         const { texte } = req.body;
@@ -267,7 +264,7 @@ exports.uploadCV = async (req, res) => {
     }
 };
 
-// ✅ Voir mon CV
+//  Voir mon CV
 exports.getMonCV = async (req, res) => {
     try {
         const cv = await CV.findOne({ candidatId: req.user.id });
@@ -292,7 +289,7 @@ exports.getMonCV = async (req, res) => {
     }
 };
 
-// ✅ Supprimer mon CV
+// Supprimer mon CV
 exports.deleteMonCV = async (req, res) => {
     try {
         const cv = await CV.findOneAndDelete({ candidatId: req.user.id });

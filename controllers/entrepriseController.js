@@ -1,7 +1,7 @@
 const Entreprise = require('../models/entreprise.model');
 const User = require('../models/user.model');
 
-// ✅ CREATE - Créer une entreprise
+// - Créer une entreprise
 exports.createEntreprise = async (req, res) => {
     try {
         const { nom, email, secteur } = req.body;
@@ -35,7 +35,7 @@ exports.createEntreprise = async (req, res) => {
     }
 };
 
-// ✅ READ - Obtenir toutes les entreprises
+//Obtenir toutes les entreprises
 exports.getAllEntreprises = async (req, res) => {
     try {
         const entreprises = await Entreprise.find();
@@ -54,7 +54,7 @@ exports.getAllEntreprises = async (req, res) => {
     }
 };
 
-// ✅ READ - Obtenir une entreprise par ID
+//  Obtenir une entreprise par ID
 exports.getEntrepriseById = async (req, res) => {
     try {
         const entreprise = await Entreprise.findById(req.params.id);
@@ -79,7 +79,7 @@ exports.getEntrepriseById = async (req, res) => {
     }
 };
 
-// ✅ UPDATE - Mettre à jour une entreprise
+// Mettre à jour une entreprise
 exports.updateEntreprise = async (req, res) => {
     try {
         const { nom, email, secteur } = req.body;
@@ -126,7 +126,7 @@ exports.updateEntreprise = async (req, res) => {
     }
 };
 
-// ✅ DELETE - Supprimer une entreprise (et ses RH/Employees)
+//  Supprimer une entreprise (et ses RH/Employees)
 exports.deleteEntreprise = async (req, res) => {
     try {
         const entreprise = await Entreprise.findByIdAndDelete(req.params.id);
@@ -159,7 +159,7 @@ exports.deleteEntreprise = async (req, res) => {
     }
 };
 
-// ✅ BONUS - Obtenir les employés d'une entreprise
+// Obtenir les employés d'une entreprise
 exports.getEntrepriseEmployees = async (req, res) => {
     try {
         const employees = await User.find({ 

@@ -1,11 +1,9 @@
 const Conge = require('../models/conge.model');
 const Plainte = require('../models/plainte.model');
 
-// ════════════════════════════════════════════════════
-// GESTION DES CONGÉS
-// ════════════════════════════════════════════════════
 
-// ✅ Demander un congé
+
+// Demander un congé
 exports.demanderConge = async (req, res) => {
     try {
         const { dateDebut, dateFin } = req.body;
@@ -39,7 +37,7 @@ exports.demanderConge = async (req, res) => {
     }
 };
 
-// ✅ Voir mes congés
+// Voir mes congés
 exports.getMesConges = async (req, res) => {
     try {
         const conges = await Conge.find({ 
@@ -60,7 +58,7 @@ exports.getMesConges = async (req, res) => {
     }
 };
 
-// ✅ Annuler un congé (si EN_ATTENTE)
+//  Annuler un congé (si EN_ATTENTE)
 exports.annulerConge = async (req, res) => {
     try {
         const conge = await Conge.findOne({
@@ -98,11 +96,8 @@ exports.annulerConge = async (req, res) => {
     }
 };
 
-// ════════════════════════════════════════════════════
-// GESTION DES PLAINTES
-// ════════════════════════════════════════════════════
 
-// ✅ Envoyer une plainte
+//  Envoyer une plainte
 exports.envoyerPlainte = async (req, res) => {
     try {
         const { sujet, message } = req.body;
@@ -128,7 +123,7 @@ exports.envoyerPlainte = async (req, res) => {
     }
 };
 
-// ✅ Voir mes plaintes
+// Voir mes plaintes
 exports.getMesPlaintes = async (req, res) => {
     try {
         const plaintes = await Plainte.find({ 
@@ -149,7 +144,7 @@ exports.getMesPlaintes = async (req, res) => {
     }
 };
 
-// ✅ Voir une plainte spécifique (avec la réponse)
+// Voir une plainte spécifique (avec la réponse)
 exports.getPlainteById = async (req, res) => {
     try {
         const plainte = await Plainte.findOne({

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-// ✅ Vérifier que l'utilisateur est connecté
+//  Vérifier que l'utilisateur est connecté
 exports.protect = async (req, res, next) => {
     try {
         let token;
@@ -34,7 +34,7 @@ exports.protect = async (req, res, next) => {
     }
 };
 
-// ✅ Vérifier le rôle de l'utilisateur
+// Vérifier le rôle de l'utilisateur
 exports.authorize = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
