@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 // ✅ REGISTER - Inscription (Candidat uniquement)
 exports.register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { nom, email, password } = req.body;
         
         const userExiste = await User.findOne({ email });
         if (userExiste) {
@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
         }
         
         const user = await User.create({
-            name,
+            nom,
             email,
             password,
             role: 'candidat'
@@ -34,7 +34,7 @@ exports.register = async (req, res) => {
             token,
             user: {
                 id: user._id,
-                name: user.name,
+                nom: user.nom,
                 email: user.email,
                 role: user.role
             }
@@ -81,7 +81,7 @@ exports.login = async (req, res) => {
             token,
             user: {
                 id: user._id,
-                name: user.name,
+                nom: user.nom,
                 email: user.email,
                 role: user.role,
                 entrepriseId: user.entrepriseId,
@@ -127,11 +127,11 @@ exports.getProfile = async (req, res) => {
 // ✅ UPDATE PROFILE - Modifier profil
 exports.updateProfile = async (req, res) => {
     try {
-        const { name, email } = req.body;
+        const { nom, email } = req.body;
         
         const user = await User.findByIdAndUpdate(
             req.user.id,
-            { name, email },
+            { nom, email },
             { new: true, runValidators: true }
         )
             .populate('entrepriseId', 'nom email secteur')

@@ -11,7 +11,7 @@ const Plainte = require('../models/plainte.model');
 // ✅ Créer un employé (dans son entreprise)
 exports.createEmployee = async (req, res) => {
     try {
-        const { nom, email, motDePasse, departement } = req.body;
+        const {name , email, password, departement } = req.body;
         
         // Vérifier si l'email existe
         const userExiste = await User.findOne({ email });
@@ -24,9 +24,9 @@ exports.createEmployee = async (req, res) => {
         
         // Créer l'employé dans l'entreprise du RH
         const employee = await User.create({
-            nom,
+            name,
             email,
-            motDePasse,
+            password,
             role: 'employee',
             entrepriseId: req.user.entrepriseId,  // ← Entreprise du RH connecté
             departement
@@ -37,7 +37,7 @@ exports.createEmployee = async (req, res) => {
             message: 'Employé créé avec succès',
             employee: {
                 id: employee._id,
-                nom: employee.nom,
+                nom: employee.name,
                 email: employee.email,
                 departement: employee.departement
             }

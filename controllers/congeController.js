@@ -184,7 +184,7 @@ exports.getCongesByEmploye = async (req, res) => {
     }
 };
 
-// ✅ BONUS - Obtenir les congés par statut
+// Obtenir les congés par statut
 exports.getCongesByStatut = async (req, res) => {
     try {
         const { statut } = req.params;

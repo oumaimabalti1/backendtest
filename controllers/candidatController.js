@@ -2,11 +2,11 @@ const Offre = require('../models/offre.model');
 const Candidature = require('../models/candidature.model');
 const CV = require('../models/cv.model');
 
-// ════════════════════════════════════════════════════
-// GESTION DES OFFRES
-// ════════════════════════════════════════════════════
 
-// ✅ Voir toutes les offres disponibles
+// GESTION DES OFFRES
+
+
+// Voir toutes les offres disponibles
 exports.getAllOffres = async (req, res) => {
     try {
         const offres = await Offre.find()
@@ -27,7 +27,7 @@ exports.getAllOffres = async (req, res) => {
     }
 };
 
-// ✅ Voir une offre en détail
+// Voir une offre en détail
 exports.getOffreById = async (req, res) => {
     try {
         const offre = await Offre.findById(req.params.id)
@@ -53,11 +53,9 @@ exports.getOffreById = async (req, res) => {
     }
 };
 
-// ════════════════════════════════════════════════════
 // GESTION DES CANDIDATURES
-// ════════════════════════════════════════════════════
 
-// ✅ Postuler à une offre
+// Postuler à une offre
 exports.postuler = async (req, res) => {
     try {
         const { offreId } = req.body;
@@ -111,7 +109,7 @@ exports.postuler = async (req, res) => {
     }
 };
 
-// ✅ Voir mes candidatures
+// Voir mes candidatures
 exports.getMesCandidatures = async (req, res) => {
     try {
         const candidatures = await Candidature.find({ 
@@ -141,7 +139,7 @@ exports.getMesCandidatures = async (req, res) => {
     }
 };
 
-// ✅ Voir le statut d'une candidature
+// Voir le statut d'une candidature
 exports.getCandidatureById = async (req, res) => {
     try {
         const candidature = await Candidature.findOne({
@@ -177,7 +175,7 @@ exports.getCandidatureById = async (req, res) => {
     }
 };
 
-// ✅ Annuler une candidature (si EN_ATTENTE)
+// Annuler une candidature (si EN_ATTENTE)
 exports.annulerCandidature = async (req, res) => {
     try {
         const candidature = await Candidature.findOne({

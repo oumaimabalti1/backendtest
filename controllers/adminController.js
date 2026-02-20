@@ -1,7 +1,7 @@
 const Entreprise = require('../models/entreprise.model');
 const User = require('../models/user.model');
 
-// ✅ Créer Entreprise + Compte RH en une seule fois
+//Créer Entreprise + Compte RH 
 exports.createEntrepriseWithRH = async (req, res) => {
     try {
         const { 
@@ -13,11 +13,11 @@ exports.createEntrepriseWithRH = async (req, res) => {
             // Données du RH
             nomRH,
             emailRH,
-            motDePasseRH,
-            departement
+            passwordRH,
+            
         } = req.body;
         
-        // 1️⃣ Vérifier si l'email de l'entreprise existe déjà
+        // Vérifier si l'email de l'entreprise existe déjà
         const entrepriseExiste = await Entreprise.findOne({ email: emailEntreprise });
         if (entrepriseExiste) {
             return res.status(400).json({ 
@@ -37,19 +37,19 @@ exports.createEntrepriseWithRH = async (req, res) => {
         
         // 3️⃣ Créer l'entreprise
         const entreprise = await Entreprise.create({
-            nom: nomEntreprise,
+            name: nomEntreprise,
             email: emailEntreprise,
             secteur
         });
         
-        // 4️⃣ Créer le compte RH lié à cette entreprise
+        // Créer le compte RH lié à cette entreprise
         const rh = await User.create({
-            nom: nomRH,
+            name: nomRH,
             email: emailRH,
-            motDePasse: motDePasseRH,
+            password: passwordRH,
             role: 'RH',
             entrepriseId: entreprise._id,
-            departement
+        
         });
         
         res.status(201).json({
@@ -68,7 +68,7 @@ exports.createEntrepriseWithRH = async (req, res) => {
                     email: rh.email,
                     role: rh.role,
                     entrepriseId: rh.entrepriseId,
-                    departement: rh.departement
+                  
                 }
             }
         });

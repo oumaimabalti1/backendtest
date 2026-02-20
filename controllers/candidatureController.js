@@ -2,7 +2,7 @@ const Candidature = require('../models/candidature.model');
 const Offre = require('../models/offre.model');
 const User = require('../models/user.model');
 
-// ✅ CREATE - Créer une candidature
+// Créer une candidature
 exports.createCandidature = async (req, res) => {
     try {
         const { candidatId, offreId, scoreIA } = req.body;
@@ -19,9 +19,7 @@ exports.createCandidature = async (req, res) => {
         // Vérifier que l'offre existe
         const offre = await Offre.findById(offreId);
         if (!offre) {
-            return res.status(404).json({ 
-                success: false,
-                message: 'Offre non trouvée' 
+            return res.status(404).json({  success: false, message: 'Offre non trouvée' 
             });
         }
         
