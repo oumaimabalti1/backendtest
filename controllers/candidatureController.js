@@ -40,7 +40,7 @@ exports.createCandidature = async (req, res) => {
         
         // Populate pour renvoyer les infos complètes
         await candidature.populate([
-            { path: 'candidatId', select: 'nom email' },
+            { path: 'candidatId', select: 'name email' },
             { path: 'offreId', select: 'titre description' }
         ]);
         
@@ -62,7 +62,7 @@ exports.createCandidature = async (req, res) => {
 exports.getAllCandidatures = async (req, res) => {
     try {
         const candidatures = await Candidature.find()
-            .populate('candidatId', 'nom email')
+            .populate('candidatId', 'name email')
             .populate('offreId', 'titre description entrepriseId')
             .sort({ createdAt: -1 });
         
@@ -84,7 +84,7 @@ exports.getAllCandidatures = async (req, res) => {
 exports.getCandidatureById = async (req, res) => {
     try {
         const candidature = await Candidature.findById(req.params.id)
-            .populate('candidatId', 'nom email')
+            .populate('candidatId', 'name email')
             .populate('offreId', 'titre description entrepriseId');
         
         if (!candidature) {
@@ -117,7 +117,7 @@ exports.updateCandidatureStatut = async (req, res) => {
             { statut, scoreIA },
             { new: true, runValidators: true }
         )
-            .populate('candidatId', 'nom email')
+            .populate('candidatId', 'name email')
             .populate('offreId', 'titre description');
         
         if (!candidature) {
@@ -194,7 +194,7 @@ exports.getCandidaturesByCandidat = async (req, res) => {
 exports.getCandidaturesByOffre = async (req, res) => {
     try {
         const candidatures = await Candidature.find({ offreId: req.params.offreId })
-            .populate('candidatId', 'nom email')
+            .populate('candidatId', 'name email')
             .sort({ scoreIA: -1 });  // Trier par score IA (meilleur en premier)
         
         res.json({
@@ -217,7 +217,7 @@ exports.getCandidaturesByStatut = async (req, res) => {
         const { statut } = req.params;
         
         const candidatures = await Candidature.find({ statut })
-            .populate('candidatId', 'nom email')
+            .populate('candidatId', 'name email')
             .populate('offreId', 'titre description')
             .sort({ createdAt: -1 });
         

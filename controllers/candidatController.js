@@ -91,7 +91,7 @@ exports.postuler = async (req, res) => {
         });
         
         await candidature.populate([
-            { path: 'candidatId', select: 'nom email' },
+            { path: 'candidatId', select: 'name email' },
             { path: 'offreId', select: 'titre description' }
         ]);
         

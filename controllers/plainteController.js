@@ -24,7 +24,7 @@ exports.createPlainte = async (req, res) => {
             statut: 'EN_ATTENTE'
         });
         
-        await plainte.populate('employeId', 'nom email departement');
+        await plainte.populate('employeId', 'name email departement');
         
         res.status(201).json({
             success: true,
@@ -43,7 +43,7 @@ exports.createPlainte = async (req, res) => {
 exports.getAllPlaintes = async (req, res) => {
     try {
         const plaintes = await Plainte.find()
-            .populate('employeId', 'nom email departement entrepriseId')
+            .populate('employeId', 'name email departement entrepriseId')
             .sort({ createdAt: -1 });
         
         res.json({
@@ -63,7 +63,7 @@ exports.getAllPlaintes = async (req, res) => {
 exports.getPlainteById = async (req, res) => {
     try {
         const plainte = await Plainte.findById(req.params.id)
-            .populate('employeId', 'nom email departement');
+            .populate('employeId', 'name email departement');
         
         if (!plainte) {
             return res.status(404).json({ 
@@ -104,7 +104,7 @@ exports.updatePlainte = async (req, res) => {
             req.params.id,
             updateData,
             { new: true, runValidators: true }
-        ).populate('employeId', 'nom email departement');
+        ).populate('employeId', 'name email departement');
         
         if (!plainte) {
             return res.status(404).json({ 
@@ -179,7 +179,7 @@ exports.getPlaintesByStatut = async (req, res) => {
         const { statut } = req.params;
         
         const plaintes = await Plainte.find({ statut })
-            .populate('employeId', 'nom email departement')
+            .populate('employeId', 'name email departement')
             .sort({ createdAt: -1 });
         
         res.json({

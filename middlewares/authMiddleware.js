@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/user.model');
 
-//  Vérifier que l'utilisateur est connecté
+// ✅ Vérifier que l'utilisateur est connecté
 exports.protect = async (req, res, next) => {
     try {
         let token;
@@ -20,9 +21,25 @@ exports.protect = async (req, res, next) => {
         
         // Vérifier et décoder le token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        // decoded hia id /role..
         
-        // Ajouter les infos de l'utilisateur à req
-        req.user = decoded;  // { id: '...', role: '...' }
+        // Récupérer l'user complet depuis la DB
+        const user = await User.findById(decoded.id).select('-password');
+        
+        if (!user) {
+            return res.status(401).json({ 
+                success: false,
+                message: 'Utilisateur non trouvé' 
+            });
+        }
+        
+        // Ajouter l'user COMPLET à req (avec entrepriseId)
+        req.user = {
+            id: user._id,
+            role: user.role,
+            entrepriseId: user.entrepriseId,  // ← MAINTENANT disponible !
+            departement: user.departement
+        };
         
         next();
         

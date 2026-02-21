@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 //  Inscription (Candidat uniquement)
 exports.register = async (req, res) => {
     try {
-        const { nom, email, password } = req.body;
+        const { name, email, password } = req.body;
         
         const userExiste = await User.findOne({ email });
         if (userExiste) {
@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
         }
         
         const user = await User.create({
-            nom,
+            name,
             email,
             password,
             role: 'candidat'
@@ -34,7 +34,7 @@ exports.register = async (req, res) => {
             token,
             user: {
                 id: user._id,
-                nom: user.nom,
+                nom: user.name,
                 email: user.email,
                 role: user.role
             }
@@ -70,7 +70,7 @@ exports.login = async (req, res) => {
         }
         
         const token = jwt.sign(
-            { id: user._id, role: user.role },
+            { id: user._id, role: user.role, entrepriseId: user.entrepriseId },
             process.env.JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -81,7 +81,7 @@ exports.login = async (req, res) => {
             token,
             user: {
                 id: user._id,
-                nom: user.nom,
+                nom: user.name,
                 email: user.email,
                 role: user.role,
                 entrepriseId: user.entrepriseId,
@@ -102,7 +102,7 @@ exports.getProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user.id)
             .populate('entrepriseId', 'nom email secteur')
-            .select('password');
+            .select('-password');
         
         if (!user) {
             return res.status(404).json({ 
@@ -127,15 +127,15 @@ exports.getProfile = async (req, res) => {
 // Modifier profil
 exports.updateProfile = async (req, res) => {
     try {
-        const { nom, email } = req.body;
+        const { name, email } = req.body;
         
         const user = await User.findByIdAndUpdate(
             req.user.id,
-            { nom, email },
+            { name, email },
             { new: true, runValidators: true }
         )
             .populate('entrepriseId', 'nom email secteur')
-            .select('password');
+            .select('-password');
         
         res.json({
             success: true,

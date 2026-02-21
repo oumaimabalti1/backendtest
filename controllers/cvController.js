@@ -35,7 +35,7 @@ exports.uploadCV = async (req, res) => {
             candidatId
         });
         
-        await cv.populate('candidatId', 'nom email');
+        await cv.populate('candidatId', 'name email');
         
         res.status(201).json({
             success: true,
@@ -56,7 +56,7 @@ exports.uploadCV = async (req, res) => {
 exports.getAllCVs = async (req, res) => {
     try {
         const cvs = await CV.find()
-            .populate('candidatId', 'nom email')
+            .populate('candidatId', 'name email')
             .sort({ createdAt: -1 });
         
         res.json({
@@ -77,7 +77,7 @@ exports.getAllCVs = async (req, res) => {
 exports.getCVById = async (req, res) => {
     try {
         const cv = await CV.findById(req.params.id)
-            .populate('candidatId', 'nom email');
+            .populate('candidatId', 'name email');
         
         if (!cv) {
             return res.status(404).json({ 
@@ -115,7 +115,7 @@ exports.updateCV = async (req, res) => {
             req.params.id,
             updateData,
             { new: true, runValidators: true }
-        ).populate('candidatId', 'nom email');
+        ).populate('candidatId', 'name email');
         
         if (!cv) {
             return res.status(404).json({ 
@@ -171,7 +171,7 @@ exports.deleteCV = async (req, res) => {
 exports.getCVByCandidat = async (req, res) => {
     try {
         const cv = await CV.findOne({ candidatId: req.params.candidatId })
-            .populate('candidatId', 'nom email');
+            .populate('candidatId', 'name email');
         
         if (!cv) {
             return res.status(404).json({ 

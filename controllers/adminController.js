@@ -26,7 +26,7 @@ exports.createEntrepriseWithRH = async (req, res) => {
             });
         }
         
-        // 2️ Vérifier si l'email du RH existe déjà
+        // Vérifier si l'email du RH existe déjà
         const rhExiste = await User.findOne({ email: emailRH });
         if (rhExiste) {
             return res.status(400).json({ 

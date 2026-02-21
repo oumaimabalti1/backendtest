@@ -8,9 +8,10 @@ const Plainte = require('../models/plainte.model');
 // GESTION DES EMPLOYÉS
 // ════════════════════════════════════════════════════
 
-// ✅ Créer un employé (dans son entreprise)
+//Créer un employé (dans son entreprise)
 exports.createEmployee = async (req, res) => {
     try {
+           console.log("USER CONNECTÉ :", req.user);
         const {name , email, password, departement } = req.body;
         
         // Vérifier si l'email existe
@@ -39,7 +40,8 @@ exports.createEmployee = async (req, res) => {
                 id: employee._id,
                 nom: employee.name,
                 email: employee.email,
-                departement: employee.departement
+                departement: employee.departement,
+                entrepriseId: employee.entrepriseId
             }
         });
         
@@ -51,13 +53,13 @@ exports.createEmployee = async (req, res) => {
     }
 };
 
-// ✅ Obtenir tous les employés de son entreprise
+// Obtenir tous les employés de son entreprise
 exports.getMyEmployees = async (req, res) => {
     try {
         const employees = await User.find({ 
             role: 'employee',
             entrepriseId: req.user.entrepriseId  // ← Seulement son entreprise
-        }).select('-motDePasse');
+        }).select('-password');
         
         res.json({
             success: true,
@@ -205,7 +207,7 @@ exports.getMyCandidatures = async (req, res) => {
         const candidatures = await Candidature.find({ 
             offreId: { $in: offreIds }
         })
-            .populate('candidatId', 'nom email')
+            .populate('candidatId', 'name email')
             .populate('offreId', 'titre description')
             .sort({ scoreIA: -1 });  // Meilleurs scores en premier
         
@@ -247,7 +249,7 @@ exports.acceptCandidature = async (req, res) => {
         candidature.statut = 'ACCEPTEE';
         await candidature.save();
         
-        await candidature.populate('candidatId', 'nom email');
+        await candidature.populate('candidatId', 'name email');
         
         res.json({
             success: true,
@@ -287,7 +289,7 @@ exports.refuseCandidature = async (req, res) => {
         candidature.statut = 'REFUSEE';
         await candidature.save();
         
-        await candidature.populate('candidatId', 'nom email');
+        await candidature.populate('candidatId', 'name email');
         
         res.json({
             success: true,
@@ -322,7 +324,7 @@ exports.getEmployeeConges = async (req, res) => {
         const conges = await Conge.find({ 
             employeId: { $in: employeeIds }
         })
-            .populate('employeId', 'nom email departement')
+            .populate('employeId', 'name email departement')
             .sort({ createdAt: -1 });
         
         res.json({
@@ -434,7 +436,7 @@ exports.getEmployeePlaintes = async (req, res) => {
         const plaintes = await Plainte.find({ 
             employeId: { $in: employeeIds }
         })
-            .populate('employeId', 'nom email departement')
+            .populate('employeId', 'name email departement')
             .sort({ createdAt: -1 });
         
         res.json({

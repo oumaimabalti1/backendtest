@@ -4,7 +4,7 @@ const User = require('../models/user.model');
 // - Créer une entreprise
 exports.createEntreprise = async (req, res) => {
     try {
-        const { nom, email, secteur } = req.body;
+        const { name, email, secteur } = req.body;
         
         // Vérifier si l'email existe déjà
         const entrepriseExiste = await Entreprise.findOne({ email });
@@ -16,7 +16,7 @@ exports.createEntreprise = async (req, res) => {
         }
         
         const entreprise = await Entreprise.create({
-            nom,
+            name,
             email,
             secteur
         });
@@ -82,7 +82,7 @@ exports.getEntrepriseById = async (req, res) => {
 // Mettre à jour une entreprise
 exports.updateEntreprise = async (req, res) => {
     try {
-        const { nom, email, secteur } = req.body;
+        const { name, email, secteur } = req.body;
         
         // Si l'email change, vérifier qu'il n'est pas déjà utilisé
         if (email) {
@@ -101,7 +101,7 @@ exports.updateEntreprise = async (req, res) => {
         
         const entreprise = await Entreprise.findByIdAndUpdate(
             req.params.id,
-            { nom, email, secteur },
+            { name, email, secteur },
             { new: true, runValidators: true }
         );
         
@@ -146,7 +146,7 @@ exports.deleteEntreprise = async (req, res) => {
             message: 'Entreprise et utilisateurs associés supprimés avec succès',
             entreprise: {
                 id: entreprise._id,
-                nom: entreprise.nom,
+                name: entreprise.name,
                 email: entreprise.email
             }
         });
@@ -165,7 +165,7 @@ exports.getEntrepriseEmployees = async (req, res) => {
         const employees = await User.find({ 
             entrepriseId: req.params.id,
             role: { $in: ['RH', 'employee'] }
-        }).select('-motDePasse');
+        }).select('-password');
         
         res.json({
             success: true,

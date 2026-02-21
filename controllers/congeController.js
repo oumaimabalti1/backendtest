@@ -34,7 +34,7 @@ exports.createConge = async (req, res) => {
             statut: 'EN_ATTENTE'
         });
         
-        await conge.populate('employeId', 'nom email departement');
+        await conge.populate('employeId', 'name email departement');
         
         res.status(201).json({
             success: true,
@@ -54,7 +54,7 @@ exports.createConge = async (req, res) => {
 exports.getAllConges = async (req, res) => {
     try {
         const conges = await Conge.find()
-            .populate('employeId', 'nom email departement entrepriseId')
+            .populate('employeId', 'name email departement entrepriseId')
             .sort({ createdAt: -1 });
         
         res.json({
@@ -75,7 +75,7 @@ exports.getAllConges = async (req, res) => {
 exports.getCongeById = async (req, res) => {
     try {
         const conge = await Conge.findById(req.params.id)
-            .populate('employeId', 'nom email departement');
+            .populate('employeId', 'name email departement');
         
         if (!conge) {
             return res.status(404).json({ 
@@ -113,7 +113,7 @@ exports.updateCongeStatut = async (req, res) => {
             req.params.id,
             { statut },
             { new: true, runValidators: true }
-        ).populate('employeId', 'nom email departement');
+        ).populate('employeId', 'name email departement');
         
         if (!conge) {
             return res.status(404).json({ 
@@ -190,7 +190,7 @@ exports.getCongesByStatut = async (req, res) => {
         const { statut } = req.params;
         
         const conges = await Conge.find({ statut })
-            .populate('employeId', 'nom email departement')
+            .populate('employeId', 'name email departement')
             .sort({ createdAt: -1 });
         
         res.json({
