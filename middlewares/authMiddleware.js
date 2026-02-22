@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 
-// ✅ Vérifier que l'utilisateur est connecté
+// Vérifier que l'utilisateur est connecté
 exports.protect = async (req, res, next) => {
     try {
         let token;
@@ -37,7 +37,7 @@ exports.protect = async (req, res, next) => {
         req.user = {
             id: user._id,
             role: user.role,
-            entrepriseId: user.entrepriseId,  // ← MAINTENANT disponible !
+            entrepriseId: user.entrepriseId,
             departement: user.departement
         };
         

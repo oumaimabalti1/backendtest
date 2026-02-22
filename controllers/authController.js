@@ -2,7 +2,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-//  Inscription (Candidat uniquement)
+//  register yamlha ken cnd
 exports.register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -10,9 +10,7 @@ exports.register = async (req, res) => {
         const userExiste = await User.findOne({ email });
         if (userExiste) {
             return res.status(400).json({ 
-                success: false,
-                message: 'Email déjà utilisé' 
-            });
+                success: false, message: 'Email déjà utilisé'  });
         }
         
         const user = await User.create({

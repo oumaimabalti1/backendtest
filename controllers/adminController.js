@@ -30,18 +30,13 @@ exports.createEntrepriseWithRH = async (req, res) => {
         const rhExiste = await User.findOne({ email: emailRH });
         if (rhExiste) {
             return res.status(400).json({ 
-                success: false,
-                message: 'Email RH déjà utilisé' 
-            });
+                success: false, message: 'Email RH déjà utilisé'   });
         }
         
         //  Créer l'entreprise
         const entreprise = await Entreprise.create({
-            name: nomEntreprise,
-            email: emailEntreprise,
-            secteur
-        });
-        
+            name: nomEntreprise, email: emailEntreprise,secteur });
+
         // Créer le compte RH lié à cette entreprise
         const rh = await User.create({
             name: nomRH,
