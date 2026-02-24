@@ -189,21 +189,20 @@ exports.deleteOffre = async (req, res) => {
     }
 };
 
-// ════════════════════════════════════════════════════
-// GESTION DES CANDIDATURES
-// ════════════════════════════════════════════════════
+// gest candidatures
+
 
 // Obtenir les candidatures pour ses offres
 exports.getMyCandidatures = async (req, res) => {
     try {
-        // 1. Récupérer les IDs des offres de son entreprise
+        // Récupérer les IDs des offres de son entreprise
         const offres = await Offre.find({ 
             entrepriseId: req.user.entrepriseId 
         }).select('_id');
         
         const offreIds = offres.map(o => o._id);
         
-        // 2. Récupérer les candidatures pour ces offres
+        // Récupérer les candidatures pour ces offres
         const candidatures = await Candidature.find({ 
             offreId: { $in: offreIds }
         })
@@ -305,9 +304,8 @@ exports.refuseCandidature = async (req, res) => {
     }
 };
 
-// ════════════════════════════════════════════════════
-// GESTION DES CONGÉS
-// ════════════════════════════════════════════════════
+// gest conges
+
 
 //  Obtenir les demandes de congé de ses employés
 exports.getEmployeeConges = async (req, res) => {
@@ -416,10 +414,7 @@ exports.refuseConge = async (req, res) => {
         });
     }
 };
-
-// ════════════════════════════════════════════════════
-// GESTION DES PLAINTES
-// ════════════════════════════════════════════════════
+// gest plaintes
 
 // Obtenir les plaintes de ses employés
 exports.getEmployeePlaintes = async (req, res) => {

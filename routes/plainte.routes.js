@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const plainteController = require('../controllers/plainteController');
 
-// Routes CRUD
-router.post('/', plainteController.createPlainte);                     // CREATE
-router.get('/', plainteController.getAllPlaintes);                     // READ ALL
-router.get('/:id', plainteController.getPlainteById);                  // READ ONE
-router.put('/:id', plainteController.updatePlainte);                   // UPDATE
-router.delete('/:id', plainteController.deletePlainte);                // DELETE
-router.get('/employe/:employeId', plainteController.getPlaintesByEmploye);     // BY EMPLOYEE
-router.get('/statut/:statut', plainteController.getPlaintesByStatut);          // BY STATUT
+
+router.post('/', plainteController.createPlainte);                    
+router.get('/', plainteController.getAllPlaintes);                     
+router.get('/:id', plainteController.getPlainteById);                 
+router.put('/:id', plainteController.updatePlainte);                  
+router.delete('/:id', plainteController.deletePlainte);                
+router.get('/employe/:employeId', plainteController.getPlaintesByEmploye);    
+router.get('/statut/:statut', plainteController.getPlaintesByStatut);          
 
 module.exports = router;

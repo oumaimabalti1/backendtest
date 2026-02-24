@@ -20,23 +20,18 @@ router.get('/offres', rhController.getMyOffres);
 router.put('/offres/:id', rhController.updateOffre);
 router.delete('/offres/:id', rhController.deleteOffre);
 
-// ─────────────────────────────────────────
-// GESTION DES CANDIDATURES
-// ─────────────────────────────────────────
+
+//candidatures
 router.get('/candidatures', rhController.getMyCandidatures);
 router.put('/candidatures/:id/accept', rhController.acceptCandidature);
 router.put('/candidatures/:id/refuse', rhController.refuseCandidature);
 
-// ─────────────────────────────────────────
-// GESTION DES CONGÉS
-// ─────────────────────────────────────────
+//conges
 router.get('/conges', rhController.getEmployeeConges);
 router.put('/conges/:id/approve', rhController.approveConge);
 router.put('/conges/:id/refuse', rhController.refuseConge);
 
-// ─────────────────────────────────────────
-// GESTION DES PLAINTES
-// ─────────────────────────────────────────
+//plaintes
 router.get('/plaintes', rhController.getEmployeePlaintes);
 router.put('/plaintes/:id/reply', rhController.replyPlainte);
 
