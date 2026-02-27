@@ -4,7 +4,6 @@ const Candidature = require('../models/candidature.model');
 const Conge = require('../models/conge.model');
 const Plainte = require('../models/plainte.model');
 
-// ════════════════════════════════════════════════════
 // GESTION DES EMPLOYÉS
 // ════════════════════════════════════════════════════
 
