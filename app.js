@@ -44,20 +44,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.use("/", indexRouter);
 app.use('/auth', authRouter); 
-app.use("/users", usersRouter);
+
 app.use('/admin', adminRouter);
 app.use('/rh', rhRouter); 
 app.use('/employee', employeeRouter); 
 app.use('/candidat', candidatRouter); 
-app.use("/entreprises", entrepriseRoutes);
-app.use("/offres",offresRouter);
-app.use("/candidatures", candidaturesRouter);
-app.use('/cvs', cvsRouter);
-app.use('/conges', congesRouter);
-app.use('/plaintes', plaintesRouter); 
+
+
+
+
 
 
 

@@ -192,34 +192,42 @@ exports.deleteOffre = async (req, res) => {
 
 
 // Obtenir les candidatures pour ses offres
+
 exports.getMyCandidatures = async (req, res) => {
     try {
-        // Récupérer les IDs des offres de son entreprise
         const offres = await Offre.find({ 
             entrepriseId: req.user.entrepriseId 
         }).select('_id');
         
         const offreIds = offres.map(o => o._id);
         
-        // Récupérer les candidatures pour ces offres
         const candidatures = await Candidature.find({ 
             offreId: { $in: offreIds }
         })
             .populate('candidatId', 'name email')
             .populate('offreId', 'titre description')
-            .sort({ scoreIA: -1 });  // Meilleurs scores en premier
+            .sort({ createdAt: -1 });
+
+        // Attacher le CV de chaque candidat
+        const CV = require('../models/cv.model');
+        const candidatIds = candidatures.map(c => c.candidatId?._id).filter(Boolean);
+        const cvs = await CV.find({ candidatId: { $in: candidatIds } });
+        const cvMap = {};
+        cvs.forEach(cv => { cvMap[cv.candidatId.toString()] = cv; });
+
+        const result = candidatures.map(c => ({
+            ...c.toObject(),
+            cv: cvMap[c.candidatId?._id?.toString()] || null
+        }));
         
         res.json({
             success: true,
-            count: candidatures.length,
-            candidatures
+            count: result.length,
+            candidatures: result
         });
         
     } catch (error) {
-        res.status(500).json({ 
-            success: false,
-            message: error.message 
-        });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 

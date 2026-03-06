@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cvController = require('../controllers/cvController');
-const uploadfile = require('../middlewares/uploadfile');  // ← TON MIDDLEWARE
+const uploadfile = require('../middlewares/uploadfile');  
 
 // Routes CRUD
 router.post('/', uploadfile.single('cv'), cvController.uploadCV);           // cree avec upload
