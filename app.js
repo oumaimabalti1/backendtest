@@ -6,7 +6,6 @@ var logger = require('morgan');
 const http = require('http');
 const cors = require('cors'); 
 
-
 var indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth.routes');  
 const usersRouter = require('./routes/users.routes');
@@ -28,10 +27,15 @@ var app = express();
 
 app.use(logger('dev'));
 
+// ✅ CORS — accepte localhost ET Netlify
 app.use(cors({
     origin: function (origin, callback) {
-        // Accepter tous les localhost (3000, 3001, 3002, etc.)
-        if (!origin || origin.startsWith('http://localhost')) {
+        if (!origin) return callback(null, true); // Postman, curl
+        if (
+            origin.startsWith('http://localhost') ||
+            origin.startsWith('https://localhost') ||
+            origin.endsWith('.netlify.app')         // ✅ tous les sites Netlify
+        ) {
             callback(null, true);
         } else {
             callback(null, false);
@@ -46,22 +50,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-
 app.use("/", indexRouter);
 app.use('/auth', authRouter); 
-
 app.use('/admin', adminRouter);
 app.use('/rh', rhRouter); 
 app.use('/employee', employeeRouter); 
 app.use('/candidat', candidatRouter); 
 
-
-
-
-
-
-
-// catch 404 and forward to error handler
+// catch 404
 app.use(function(req, res, next) {
   next(createError(404));
 });
@@ -75,11 +71,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
 const server = http.createServer(app);
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT || 5000, () => {
   connectToMongoDB();
-  console.log(`Server is running on http://localhost:${process.env.PORT}`);
-   console.log(` CORS enabled for all localhost ports`); 
+  console.log(`Server is running on port ${process.env.PORT || 5000}`);
 });
-
