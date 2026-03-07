@@ -81,12 +81,13 @@ exports.getMyEmployees = async (req, res) => {
 // Publier une offre
 exports.publishOffre = async (req, res) => {
     try {
-        const { titre, description } = req.body;
+        const { titre, description, domaine } = req.body;
         
         const offre = await Offre.create({
             titre,
             description,
-            entrepriseId: req.user.entrepriseId  // ← Son entreprise
+            entrepriseId: req.user.entrepriseId,
+            domaine: domaine || "Autre"
         });
         
         res.status(201).json({
@@ -108,7 +109,7 @@ exports.getMyOffres = async (req, res) => {
     try {
         const offres = await Offre.find({ 
             entrepriseId: req.user.entrepriseId 
-        }).sort({ dateCreation: -1 });
+        }).populate('entrepriseId', 'nom email secteur').sort({ dateCreation: -1 });
         
         res.json({
             success: true,
@@ -127,7 +128,7 @@ exports.getMyOffres = async (req, res) => {
 //  Modifier une offre
 exports.updateOffre = async (req, res) => {
     try {
-        const { titre, description } = req.body;
+        const { titre, description, domaine } = req.body;
         
         // Vérifier que l'offre appartient à son entreprise
         const offre = await Offre.findOne({
@@ -144,6 +145,7 @@ exports.updateOffre = async (req, res) => {
         
         offre.titre = titre || offre.titre;
         offre.description = description || offre.description;
+        offre.domaine = domaine || offre.domaine;
         await offre.save();
         
         res.json({

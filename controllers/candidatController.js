@@ -6,24 +6,41 @@ const CV = require('../models/cv.model');
 // GESTION DES OFFRES
 
 
-// Voir toutes les offres disponibles
+// Voir toutes les offres disponibles (avec filtres)
 exports.getAllOffres = async (req, res) => {
     try {
-        const offres = await Offre.find()
+        const { domaine, periode, search } = req.query;
+        const filter = { statut: 'active' };
+
+        if (domaine) filter.domaine = domaine;
+
+        if (periode) {
+            let dateFrom;
+            if (periode === 'today') {
+                dateFrom = new Date(); dateFrom.setHours(0, 0, 0, 0);
+            } else if (periode === 'week') {
+                dateFrom = new Date(); dateFrom.setDate(dateFrom.getDate() - 7);
+            } else if (periode === 'month') {
+                dateFrom = new Date(); dateFrom.setMonth(dateFrom.getMonth() - 1);
+            }
+            if (dateFrom) filter.dateCreation = { $gte: dateFrom };
+        }
+
+        if (search) {
+            filter.$or = [
+                { titre: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } }
+            ];
+        }
+
+        const offres = await Offre.find(filter)
             .populate('entrepriseId', 'nom email secteur')
             .sort({ dateCreation: -1 });
-        
-        res.json({
-            success: true,
-            count: offres.length,
-            offres
-        });
-        
+
+        res.json({ success: true, count: offres.length, offres });
+
     } catch (error) {
-        res.status(500).json({ 
-            success: false,
-            message: error.message 
-        });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
