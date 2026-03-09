@@ -132,9 +132,9 @@ exports.getMesCandidatures = async (req, res) => {
         const candidatures = await Candidature.find({ 
             candidatId: req.user.id 
         })
-            .populate('offreId', 'titre description entrepriseId')
             .populate({
                 path: 'offreId',
+                select: 'titre description entrepriseId',
                 populate: {
                     path: 'entrepriseId',
                     select: 'nom secteur'

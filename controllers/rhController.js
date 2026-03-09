@@ -81,13 +81,12 @@ exports.getMyEmployees = async (req, res) => {
 // Publier une offre
 exports.publishOffre = async (req, res) => {
     try {
-        const { titre, description, domaine } = req.body;
+        const { titre, description } = req.body;
         
         const offre = await Offre.create({
             titre,
             description,
-            entrepriseId: req.user.entrepriseId,
-            domaine: domaine || "Autre"
+            entrepriseId: req.user.entrepriseId  // ← Son entreprise
         });
         
         res.status(201).json({
@@ -109,7 +108,7 @@ exports.getMyOffres = async (req, res) => {
     try {
         const offres = await Offre.find({ 
             entrepriseId: req.user.entrepriseId 
-        }).populate('entrepriseId', 'nom email secteur').sort({ dateCreation: -1 });
+        }).sort({ dateCreation: -1 });
         
         res.json({
             success: true,
@@ -128,7 +127,7 @@ exports.getMyOffres = async (req, res) => {
 //  Modifier une offre
 exports.updateOffre = async (req, res) => {
     try {
-        const { titre, description, domaine } = req.body;
+        const { titre, description } = req.body;
         
         // Vérifier que l'offre appartient à son entreprise
         const offre = await Offre.findOne({
@@ -145,7 +144,6 @@ exports.updateOffre = async (req, res) => {
         
         offre.titre = titre || offre.titre;
         offre.description = description || offre.description;
-        offre.domaine = domaine || offre.domaine;
         await offre.save();
         
         res.json({
@@ -236,40 +234,22 @@ exports.getMyCandidatures = async (req, res) => {
 //  Accepter une candidature
 exports.acceptCandidature = async (req, res) => {
     try {
-        const candidature = await Candidature.findById(req.params.id)
-            .populate('offreId');
-        
-        if (!candidature) {
-            return res.status(404).json({ 
-                success: false,
-                message: 'Candidature non trouvée' 
-            });
-        }
-        
-        // Vérifier que l'offre appartient à son entreprise
-        if (candidature.offreId.entrepriseId.toString() !== req.user.entrepriseId.toString()) {
-            return res.status(403).json({ 
-                success: false,
-                message: 'Accès refusé' 
-            });
-        }
-        
+        const { dateInterview, messageRH } = req.body;
+
+        const candidature = await Candidature.findById(req.params.id).populate('offreId');
+        if (!candidature) return res.status(404).json({ success: false, message: 'Candidature non trouvée' });
+        if (candidature.offreId.entrepriseId.toString() !== req.user.entrepriseId.toString())
+            return res.status(403).json({ success: false, message: 'Accès refusé' });
+
         candidature.statut = 'ACCEPTEE';
+        if (dateInterview) candidature.dateInterview = new Date(dateInterview);
+        if (messageRH)     candidature.messageRH = messageRH;
         await candidature.save();
-        
         await candidature.populate('candidatId', 'name email');
-        
-        res.json({
-            success: true,
-            message: 'Candidature acceptée',
-            candidature
-        });
-        
+
+        res.json({ success: true, message: 'Candidature acceptée', candidature });
     } catch (error) {
-        res.status(500).json({ 
-            success: false,
-            message: error.message 
-        });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
@@ -295,6 +275,7 @@ exports.refuseCandidature = async (req, res) => {
         }
         
         candidature.statut = 'REFUSEE';
+        if (req.body.messageRH) candidature.messageRH = req.body.messageRH;
         await candidature.save();
         
         await candidature.populate('candidatId', 'name email');

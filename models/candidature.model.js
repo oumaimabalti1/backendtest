@@ -6,19 +6,16 @@ const candidatureSchema = new mongoose.Schema({
         enum: ['EN_ATTENTE', 'ACCEPTEE', 'REFUSEE'],
         default: 'EN_ATTENTE'
     },
-    scoreIA: {
-        type: Number,
-        default: 0
-    },
+    scoreIA:       { type: Number, default: 0 },
+    dateInterview: { type: Date,   default: null },
+    messageRH:     { type: String, default: "" },
     candidatId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        ref: 'User', required: true
     },
     offreId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Offre',
-        required: true
+        ref: 'Offre', required: true
     }
 }, { timestamps: true });
 
