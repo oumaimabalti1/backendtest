@@ -1,6 +1,10 @@
 const Offre = require('../models/offre.model');
+const { scorerCV } = require('../services/scoreIA');
 const Candidature = require('../models/candidature.model');
 const CV = require('../models/cv.model');
+const pdfParse = require('pdf-parse');
+const fs = require('fs');
+const path = require('path');
 
 
 // GESTION DES OFFRES
@@ -98,13 +102,20 @@ exports.postuler = async (req, res) => {
                 message: 'Vous avez déjà postulé à cette offre' 
             });
         }
+
+        // Récupérer le CV du candidat pour le scoring IA
+        let scoreIA = 0;
+        const cv = await CV.findOne({ candidatId: req.user.id });
+        if (cv && cv.texte && cv.texte.trim().length > 20) {
+            scoreIA = await scorerCV(cv.texte, offre.titre, offre.description);
+        }
         
-        // Créer la candidature
+        // Créer la candidature avec le score IA
         const candidature = await Candidature.create({
             candidatId: req.user.id,
             offreId,
             statut: 'EN_ATTENTE',
-            scoreIA: 0  // Sera calculé par l'IA plus tard
+            scoreIA
         });
         
         await candidature.populate([
@@ -234,23 +245,34 @@ exports.annulerCandidature = async (req, res) => {
 // Upload/Mettre à jour mon CV
 exports.uploadCV = async (req, res) => {
     try {
-        const { texte } = req.body;
-        
-        // Vérifier qu'un fichier a été uploadé
         if (!req.file) {
             return res.status(400).json({ 
                 success: false,
                 message: 'Aucun fichier uploadé' 
             });
         }
-        
+
+        // Extraire le texte du PDF automatiquement
+        let texte = '';
+        try {
+            const filePath = path.join(__dirname, '..', 'public', 'images', req.file.filename);
+            console.log('PDF path:', filePath);
+            console.log('File exists:', fs.existsSync(filePath));
+            const dataBuffer = fs.readFileSync(filePath);
+            const pdfData = await pdfParse(dataBuffer);
+            texte = pdfData.text?.trim() || '';
+            console.log('Texte extrait (100 chars):', texte.substring(0, 100));
+        } catch (pdfErr) {
+            console.error('Erreur extraction PDF:', pdfErr.message);
+            texte = '';
+        }
+
         // Vérifier si le candidat a déjà un CV
         let cv = await CV.findOne({ candidatId: req.user.id });
         
         if (cv) {
-            // Mettre à jour
             cv.fichier = req.file.filename;
-            cv.texte = texte || cv.texte;
+            cv.texte = texte;
             await cv.save();
             
             res.json({
@@ -259,7 +281,6 @@ exports.uploadCV = async (req, res) => {
                 cv
             });
         } else {
-            // Créer nouveau
             cv = await CV.create({
                 fichier: req.file.filename,
                 texte,
