@@ -37,7 +37,7 @@ exports.createEntrepriseWithRH = async (req, res) => {
         const entreprise = await Entreprise.create({
             name: nomEntreprise, email: emailEntreprise,secteur });
 
-        // Créer le compte RH lié à cette entreprise
+        // Créer le compte RH lié à lentreprise
         const rh = await User.create({
             name: nomRH,
             email: emailRH,
@@ -76,7 +76,7 @@ exports.createEntrepriseWithRH = async (req, res) => {
     }
 };
 
-// Obtenir toutes les entreprises (vue Admin)
+// get all eses (vue Admin)
 exports.getAllEntreprises = async (req, res) => {
     try {
         const entreprises = await Entreprise.find();

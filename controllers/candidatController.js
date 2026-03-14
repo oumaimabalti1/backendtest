@@ -1,8 +1,6 @@
 const Offre = require('../models/offre.model');
-const { scorerCV } = require('../services/scoreIA');
 const Candidature = require('../models/candidature.model');
 const CV = require('../models/cv.model');
-const pdfParse = require('pdf-parse');
 const fs = require('fs');
 const path = require('path');
 

@@ -14,19 +14,13 @@ var storage = multer.diskStorage({
         cb(null, uploadPath);
     },
     filename: function (req, file, cb) {
-        // Nettoyer le nom du fichier (supprimer espaces et caractères spéciaux)
         const ext = path.extname(file.originalname);
         const baseName = path.basename(file.originalname, ext)
             .replace(/\s+/g, '_')
-            .replace(/[^a-zA-Z0-9_-]/g, '');
+            .replace(/[^a-zA-Z0-9_\-]/g, '');
         
-        let fileName = `${baseName}${ext}`;
-        let fileIndex = 1;
-        while (fs.existsSync(path.join(uploadPath, fileName))) {
-            fileName = `${baseName}_${fileIndex}${ext}`;
-            fileIndex++;
-        }
-        console.log('Saving file:', fileName);
+        let fileName = `${Date.now()}_${baseName}${ext}`;
+        console.log('Saving file:', fileName, 'to:', uploadPath);
         cb(null, fileName);
     }
 });

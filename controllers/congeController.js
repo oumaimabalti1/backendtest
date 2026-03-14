@@ -1,7 +1,7 @@
 const Conge = require('../models/conge.model');
 const User = require('../models/user.model');
 
-// ✅ CREATE - Demander un congé
+// CREATE Demande congé
 exports.createConge = async (req, res) => {
     try {
         const { employeId, dateDebut, dateFin } = req.body;
@@ -50,7 +50,7 @@ exports.createConge = async (req, res) => {
     }
 };
 
-// ✅ READ - Obtenir tous les congés
+// READ Obtenir tous 
 exports.getAllConges = async (req, res) => {
     try {
         const conges = await Conge.find()
@@ -71,7 +71,7 @@ exports.getAllConges = async (req, res) => {
     }
 };
 
-// ✅ READ - Obtenir un congé par ID
+// READ Obtenir un congé par ID
 exports.getCongeById = async (req, res) => {
     try {
         const conge = await Conge.findById(req.params.id)
@@ -97,7 +97,7 @@ exports.getCongeById = async (req, res) => {
     }
 };
 
-// ✅ UPDATE - Mettre à jour le statut d'un congé
+// UPDATE  Mettre à jour le statut d'un congé
 exports.updateCongeStatut = async (req, res) => {
     try {
         const { statut } = req.body;
@@ -136,7 +136,7 @@ exports.updateCongeStatut = async (req, res) => {
     }
 };
 
-// ✅ DELETE - Supprimer un congé
+//  DELETE Supprimer un congé
 exports.deleteConge = async (req, res) => {
     try {
         const conge = await Conge.findByIdAndDelete(req.params.id);
@@ -164,7 +164,7 @@ exports.deleteConge = async (req, res) => {
     }
 };
 
-// ✅ BONUS - Obtenir les congés d'un employé
+//  BONUS Obtenir les congés d'un employé
 exports.getCongesByEmploye = async (req, res) => {
     try {
         const conges = await Conge.find({ employeId: req.params.employeId })

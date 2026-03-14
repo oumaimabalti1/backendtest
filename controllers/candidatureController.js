@@ -5,7 +5,7 @@ const User = require('../models/user.model');
 // Créer une candidature
 exports.createCandidature = async (req, res) => {
     try {
-        const { candidatId, offreId, scoreIA } = req.body;
+        const { candidatId, offreId } = req.body;
         
         // Vérifier que le candidat existe
         const candidat = await User.findOne({ _id: candidatId, role: 'candidat' });
@@ -58,7 +58,7 @@ exports.createCandidature = async (req, res) => {
     }
 };
 
-// ✅ READ - Obtenir toutes les candidatures
+// READ obtenir tout 
 exports.getAllCandidatures = async (req, res) => {
     try {
         const candidatures = await Candidature.find()
@@ -80,7 +80,7 @@ exports.getAllCandidatures = async (req, res) => {
     }
 };
 
-// ✅ READ - Obtenir une candidature par ID
+//  READ get 1 cond par id
 exports.getCandidatureById = async (req, res) => {
     try {
         const candidature = await Candidature.findById(req.params.id)
@@ -107,14 +107,14 @@ exports.getCandidatureById = async (req, res) => {
     }
 };
 
-// ✅ UPDATE - Mettre à jour le statut d'une candidature
+//  UPDATE 
 exports.updateCandidatureStatut = async (req, res) => {
     try {
-        const { statut, scoreIA } = req.body;
+        const { statut,  } = req.body;
         
         const candidature = await Candidature.findByIdAndUpdate(
             req.params.id,
-            { statut, scoreIA },
+            { statut },
             { new: true, runValidators: true }
         )
             .populate('candidatId', 'name email')
@@ -141,7 +141,7 @@ exports.updateCandidatureStatut = async (req, res) => {
     }
 };
 
-//  DELETE - Supprimer une candidature
+//  DELETE 
 exports.deleteCandidature = async (req, res) => {
     try {
         const candidature = await Candidature.findByIdAndDelete(req.params.id);
@@ -195,7 +195,6 @@ exports.getCandidaturesByOffre = async (req, res) => {
     try {
         const candidatures = await Candidature.find({ offreId: req.params.offreId })
             .populate('candidatId', 'name email')
-            .sort({ scoreIA: -1 });  // Trier par score IA (meilleur en premier)
         
         res.json({
             success: true,
