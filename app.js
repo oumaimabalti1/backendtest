@@ -27,7 +27,7 @@ var app = express();
 
 app.use(logger('dev'));
 
-// ✅ CORS — accepte localhost ET Netlify
+//  accepte localhost ET Netlify
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true); // Postman, curl
