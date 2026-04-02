@@ -34,7 +34,7 @@ app.use(cors({
         if (
             origin.startsWith('http://localhost') ||
             origin.startsWith('https://localhost') ||
-            origin.endsWith('.netlify.app')         // ✅ tous les sites Netlify
+            origin.endsWith('.netlify.app')         // tout les sites Netlify
         ) {
             callback(null, true);
         } else {
