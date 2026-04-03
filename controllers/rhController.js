@@ -476,4 +476,31 @@ exports.replyPlainte = async (req, res) => {
             message: error.message 
         });
     }
+    // Générer description avec IA
+exports.generateDescription = async (req, res) => {
+    try {
+        const { titre, domaine } = req.body;
+
+        if (!titre) {
+            return res.status(400).json({
+                success: false,
+                message: 'Le titre est requis'
+            });
+        }
+
+        const aiService = require('../services/aiService');
+        const description = await aiService.generateOffreDescription(titre, domaine || 'Autre');
+
+        res.json({
+            success: true,
+            description
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur lors de la génération: ' + error.message
+        });
+    }
+};
 };

@@ -17,6 +17,8 @@ router.get('/employees', rhController.getMyEmployees);
 // ─────────────────────────────────────────
 router.post('/offres', rhController.publishOffre);
 router.get('/offres', rhController.getMyOffres);
+// Génération IA
+router.post('/offres/generate-description', rhController.generateOffreDescription);
 router.put('/offres/:id', rhController.updateOffre);
 router.delete('/offres/:id', rhController.deleteOffre);
 
