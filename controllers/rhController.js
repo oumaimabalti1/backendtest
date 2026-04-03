@@ -476,7 +476,9 @@ exports.replyPlainte = async (req, res) => {
             message: error.message 
         });
     }
-    // Générer description avec IA
+  
+};
+  // Générer description avec IA
 exports.generateDescription = async (req, res) => {
     try {
         const { titre, domaine } = req.body;
@@ -502,5 +504,4 @@ exports.generateDescription = async (req, res) => {
             message: 'Erreur lors de la génération: ' + error.message
         });
     }
-};
 };
