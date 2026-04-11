@@ -3,6 +3,7 @@ const Candidature = require('../models/candidature.model');
 const CV = require('../models/cv.model');
 const fs = require('fs');
 const path = require('path');
+const pdfParse = require('pdf-parse');
 
 
 // GESTION DES OFFRES
@@ -102,11 +103,18 @@ exports.postuler = async (req, res) => {
         }
 
         // Récupérer le CV du candidat pour le scoring IA
-        let scoreIA = 0;
-        const cv = await CV.findOne({ candidatId: req.user.id });
-        if (cv && cv.texte && cv.texte.trim().length > 20) {
-            scoreIA = await scorerCV(cv.texte, offre.titre, offre.description);
-        }
+     let scoreIA = 0;
+const cv = await CV.findOne({ candidatId: req.user.id });
+if (cv && cv.texte && cv.texte.trim().length > 20) {
+    try {
+        const aiService = require('../services/aiService');
+        scoreIA = await aiService.scorerCV(cv.texte, offre.titre, offre.description);
+        console.log("Score IA calculé:", scoreIA);
+    } catch (err) {
+        console.log("Erreur scoring IA:", err.message);
+        scoreIA = 0;
+    }
+}
         
         // Créer la candidature avec le score IA
         const candidature = await Candidature.create({

@@ -74,18 +74,19 @@ exports.getMyEmployees = async (req, res) => {
     }
 };
 
-// ════════════════════════════════════════════════════
+
 // GESTION DES OFFRES
-// ════════════════════════════════════════════════════
+
 
 // Publier une offre
 exports.publishOffre = async (req, res) => {
     try {
-        const { titre, description } = req.body;
+        const { titre, description , domaine } = req.body;
         
         const offre = await Offre.create({
             titre,
             description,
+            domaine,
             entrepriseId: req.user.entrepriseId  // ← Son entreprise
         });
         
@@ -482,26 +483,25 @@ exports.replyPlainte = async (req, res) => {
 exports.generateDescription = async (req, res) => {
     try {
         const { titre, domaine } = req.body;
+        console.log("=== DÉBUT GÉNÉRATION IA ===");
+        console.log("Titre:", titre);
+        console.log("Domaine:", domaine);
+        console.log("Clé API:", process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.substring(0, 10) + "..." : "MANQUANTE");
 
         if (!titre) {
-            return res.status(400).json({
-                success: false,
-                message: 'Le titre est requis'
-            });
+            return res.status(400).json({ success: false, message: 'Le titre est requis' });
         }
 
         const aiService = require('../services/aiService');
         const description = await aiService.generateOffreDescription(titre, domaine || 'Autre');
+        console.log("=== SUCCÈS ===");
 
-        res.json({
-            success: true,
-            description
-        });
+        res.json({ success: true, description });
 
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Erreur lors de la génération: ' + error.message
-        });
+        console.log("=== ERREUR IA ===");
+        console.log("Message:", error.message);
+        console.log("Response data:", error.response?.data);
+        res.status(500).json({ success: false, message: 'Erreur: ' + (error.response?.data?.error?.message || error.message) });
     }
 };
