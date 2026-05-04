@@ -12,9 +12,9 @@ router.use(protect, authorize('RH'));
 router.post('/employees', rhController.createEmployee);
 router.get('/employees', rhController.getMyEmployees);
 
-// ─────────────────────────────────────────
+
 // GESTION DES OFFRES
-// ─────────────────────────────────────────
+
 router.post('/offres', rhController.publishOffre);
 router.get('/offres', rhController.getMyOffres);
 // Génération IA
