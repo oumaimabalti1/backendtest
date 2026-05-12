@@ -6,9 +6,9 @@ const { protect, authorize } = require('../middlewares/authMiddleware');  // ←
 // Toutes les routes nécessitent d'être RH
 router.use(protect, authorize('RH'));
 
-// ─────────────────────────────────────────
+
 // GESTION DES EMPLOYÉS
-// ─────────────────────────────────────────
+
 router.post('/employees', rhController.createEmployee);
 router.get('/employees', rhController.getMyEmployees);
 

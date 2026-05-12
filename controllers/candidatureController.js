@@ -5,7 +5,7 @@ const User = require('../models/user.model');
 // Créer une candidature
 exports.createCandidature = async (req, res) => {
     try {
-        const { candidatId, offreId } = req.body;
+        const { candidatId, offreId, scoreIA } = req.body;
         
         // Vérifier que le candidat existe
         const candidat = await User.findOne({ _id: candidatId, role: 'candidat' });
